@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Paper from '@mui/material/Paper';
@@ -12,18 +12,33 @@ import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
-function createData(name, progress, total) {
-    return { name, progress, total };
+import ClearIcon from '@mui/icons-material/Clear';
+import TablePagination from '@mui/material/TablePagination';
+function createData(name, total) {
+    return { name, total };
 }
 
 const rows = [
-    createData('Groceries', '80%', '$240 / $400'),
-    createData('Games', '80%', '$0 / $200'),
-    createData('Entertainment', '80%', '$0 / $500'),
-    createData('Books', '80%', '$0 / $300'),
+    createData('Carrots', '$4 / $300'),
+    createData('Milk', '$5 / $300'),
+    createData('Water', '$8 / $300'),
+    createData('Meat', '$12 / $300'),
+    createData('Snacks', '$4 / $300'),
+    createData('Snacks', '$4 / $300'),
 ];
 
 const ExpenseHistory = () => {
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
     return (
         <>
             <Box>
@@ -32,7 +47,7 @@ const ExpenseHistory = () => {
                 </Typography>
                 <Paper
                     component="form"
-                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400, mb:2 }}
+                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400, mb: 2 }}
                 >
                     <InputBase
                         sx={{ ml: 1, flex: 1 }}
@@ -43,33 +58,46 @@ const ExpenseHistory = () => {
                         <SearchIcon />
                     </IconButton>
                 </Paper>
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="caption table">
+                <TableContainer component={Paper} sx={{ mb: 2, height: 440 }}>
+                    <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 650 }} >
                         <TableHead>
                             <TableRow>
-                                <TableCell align="left">Budget</TableCell>
-                                <TableCell align="center">Progress</TableCell>
-                                <TableCell align="right">Total</TableCell>
+                                <TableCell colSpan={4} align="left">Budget</TableCell>
+                                <TableCell align="right">Total $240 / 300
+                                    <IconButton sx={{ ml: 1 }}>
+                                        <PlaylistAddIcon style={{ cursor: 'pointer' }} />
+                                    </IconButton>
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.map((row) => (
-                                <TableRow key={row.name}>
+                            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                                <TableRow key={row.name} sx={{ p: 0 }}>
                                     <TableCell component="th" scope="row">
                                         {row.name}
                                     </TableCell>
-                                    <TableCell align="center">{row.progress}</TableCell>
-                                    <TableCell align="right">{row.total}</TableCell>
+                                    <TableCell colSpan={4} align="right" >{row.total}
+                                        <IconButton sx={{ ml: 1 }}>
+                                            <ClearIcon />
+                                        </IconButton>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                             <TableRow>
-                                <TableCell align="left" style={{ color: '#868282' }}>Expenses Table</TableCell>
-                                <TableCell></TableCell>
-                                <TableCell align="right" style={{ cursor: 'pointer' }}><PlaylistAddIcon /></TableCell>
+                                <TableCell align="left" colSpan={5} style={{ color: '#868282' }}>Groceries Table</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 50]}
+                    component="div"
+                    count={rows.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
             </Box>
         </>
     )
