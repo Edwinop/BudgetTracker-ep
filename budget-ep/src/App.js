@@ -4,6 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import SideNav from './components/SideNav';
 import TopNav from './components/TopNav';
 import BudgetHistory from './components/BudgetHistory';
+import ExpenseHistory from './components/ExpenseHistory';
 const App = () => {
 
   return (
@@ -17,6 +18,9 @@ const App = () => {
           <Box sx={{ flexGrow: 1, px:12, pt: 3,maxHeight: 'md' }}>
             <BudgetHistory />
           </Box>
+          <Box sx={{ flexGrow: 1, px:12, pt: 3,maxHeight: 'md' }}>
+            <ExpenseHistory />
+          </Box>          
         </Box>
       </Box>
     </Box>
