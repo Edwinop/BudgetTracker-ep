@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.edit-budget{
+  cursor: pointer;
+}
+.edit-budget:hover{
+  cursor: pointer;
+  color: black
+}
